@@ -1,50 +1,48 @@
 ## Деплой приложения на PaaS (DevOps)
 
-### Hexlet project
+[![Actions Status](https://github.com/mikitasazan/devops-engineer-from-scratch-project-313/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/mikitasazan/devops-engineer-from-scratch-project-313/actions)
 
+Учебный DevOps-проект на Python: сервис сокращения ссылок с CRUD-бэкендом,
+Docker-образом, Nginx и деплоем на PaaS.
 
-## ДАЛЬШЕ ПЕРЕПИСАТЬ РИДМИ ## 
+## Архитектура
 
-Учебный DevOps-проект на Python. Представляет собой сервис сокращения ссылок с полноценным CRUD-бэкендом. Проект
-предназначен для практики CI/CD, контейнеризации и воспроизводимого локального запуска через `make`.
+- Flask-бэкенд с SQLModel и PostgreSQL;
+- frontend подключается как npm-зависимость Hexlet;
+- Nginx проксирует API и отдаёт собранную статику;
+- Render запускает контейнер из `Dockerfile`.
 
----
-
-## Архитектура проекта
-
-1. **Backend** — Flask-приложение с CRUD-логикой сокращателя ссылок.
-2. **Frontend** — подключается как внешняя npm-зависимость.
-3. **Инфраструктура**:
-    - единый Docker-образ;
-    - Nginx в роли reverse proxy;
-    - сборка фронтенда и бэкенда внутри контейнера.
-
-Контейнер запускает backend и Nginx, который:
-
-- проксирует API-запросы к приложению;
-- отдаёт собранную статику фронтенда.
-
----
-
-## Деплой
+## Доступный стенд
 
 Приложение доступно по адресу:
 
 https://devops-engineer-from-scratch-project-313-1rpc.onrender.com/
 
----
+Адрес может измениться после пересоздания приложения. Перед проверкой
+используйте актуальный URL из настроек Render.
 
-## Доступные команды
+## Требования
+
+- Python 3.14+;
+- Node.js и npm;
+- Docker;
+- `uv` или `pip`.
+
+## Установка и команды
 
 ```bash
-# Запуск локального development-сервера
-uv run make start
+make install
+make start
+make lint
+make test
+```
 
-# Установка всех зависимостей (backend + frontend)
-uv run make install
+Backend запускается на `http://127.0.0.1:8080`. Для отдельной сборки образа:
 
-# Линтинг
-uv run make lint
+```bash
+docker build -t paas-deployment:local .
+docker run --rm -p 8080:8080 paas-deployment:local
+```
 
-# Тестирование
-uv run make test
+Переменная `API_URL` задаёт адрес API для frontend. Команды деплоя и проверок
+остаются в GitHub Actions и настройках PaaS-стенда.
