@@ -2,9 +2,14 @@ FRAMEWORK ?= react
 API_URL ?= http://127.0.0.1:8080
 DOCKER_TAG ?= sherman330turbo/pyp-example
 
-.PHONY: start start-backend start-frontend build-docker install install-back install-front lint test
+.PHONY: run start start-backend start-frontend build-docker install install-back install-front lint test
 
-start: install
+# `run` is the target name the hexlet-check grading harness invokes
+# (`make -C ./code run`); `start` is kept as an alias because that's what
+# README.md documents for local use.
+start: run
+
+run: install
 	npx concurrently \
 		--kill-others-on-fail \
 		--names "back,front" \
