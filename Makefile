@@ -4,7 +4,7 @@ DOCKER_TAG ?= sherman330turbo/pyp-example
 
 .PHONY: start start-backend start-frontend build-docker install install-back install-front lint test
 
-run: install
+start: install
 	npx concurrently \
 		--kill-others-on-fail \
 		--names "back,front" \
