@@ -31,10 +31,10 @@ start-frontend:
 install: install-back install-front
 
 install-back:
-	@if python3 -m pip --version >/dev/null 2>&1; then \
-		python3 -m pip install -e ".[dev]"; \
-	elif command -v uv >/dev/null 2>&1; then \
+	@if command -v uv >/dev/null 2>&1 && [ -f uv.lock ]; then \
 		uv sync --extra dev; \
+	elif python3 -m pip --version >/dev/null 2>&1; then \
+		python3 -m pip install -e ".[dev]"; \
 	else \
 		echo "Neither pip nor uv is available"; \
 		exit 1; \
@@ -44,7 +44,15 @@ install-front:
 	npm ci
 
 lint:
-	python3 -m ruff check .
+	@if command -v uv >/dev/null 2>&1 && [ -f uv.lock ]; then \
+		uv run ruff check .; \
+	else \
+		python3 -m ruff check .; \
+	fi
 
 test:
-	python3 -m pytest
+	@if command -v uv >/dev/null 2>&1 && [ -f uv.lock ]; then \
+		uv run pytest; \
+	else \
+		python3 -m pytest; \
+	fi
